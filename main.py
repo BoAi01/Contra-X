@@ -24,7 +24,6 @@ if __name__ == '__main__':
     parser.add_argument('--samples-per-auth', type=int, help='number of samples per author', default=None)
     parser.add_argument('--epochs', type=int, default=5)
     parser.add_argument('--model', type=str, default='microsoft/deberta-base')
-    parser.add_argument('--train-ensemble', type=bool, default=False)
     parser.add_argument('--coe', type=float, default=1)
 
     # dataset - num of authors mapping
@@ -45,7 +44,7 @@ if __name__ == '__main__':
     mask_classes = {
         'blog': [],
         'imdb62': [],
-        'enron': []
+        'turing': []
     }
 
     # load data and remove emails containing the sender's name
