@@ -1,40 +1,46 @@
-# CS4248-Authorship-Attribution
+# Contra-X
 
-## Run the code
+This repo contains implementation of the Contra-X models in the paper \
+Whodunit? Learning to Contrast for Authorship Attribution, AACL-IJCNLP 2022 [[arxiv](https://arxiv.org/abs/2209.11887)]
 
-To understand all relavant command line arguments, see `main.py`. One example run: </p>
-```python main.py --dataset ccat50 --id 0 --tqdm True```
+## Get started
 
-## Env setup
+Firstly, clone the repo on compute machine with
 
-PyTorch needs to be compiled with the correct CUDA version. Example for CUDA 11: </p>
-```conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch ``` </p>
-For more info, see  [here](https://pytorch.org/).  </p>
+```git clone https://github.com/BoAi01/Contra-X.git```
 
-Manually install APEX:
+Next, create a conda environment with the packages listed in `requirements.txt` installed
 
+```conda create -n contrax --file requirements.txt```
+
+Activate the environment and download the dataset 
 ```
-git clone https://github.com/NVIDIA/apex
-pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./apex
+conda activate contrax
+cd Contra-X
+python prepare_datasets.py
 ```
-
-For the other depdencies, manual installation is required.
+The datasets have been preprocessed. In particular, the orignal `TuringBench` dataset can be found [here](https://turingbench.ist.psu.edu/).
 
 ## Training
 
-One-time preparation of dataset </p>
-``` python prepare_dataset.py ```
+Command line arguments are specified in `main.py`. One example command to run an experiment on the blog10 dataset: 
+```
+python main.py --dataset blog --id blog10 --gpu 0 --tqdm True --authors 10 \
+--epochs 8 --model microsoft/deberta-base
+```
 
-Start training with</p>
-``` python main.py --dataset <dataset name in ['imdb62', 'enron', 'imdb', 'blog']>  --gpu <gpu indices, optional> --samples-per-author <# of samples per author> ```
+Experiments on other datasets can be run in a similar way. 
 
-## Pre-trained model training
+## Citation
+If you use our implementation in your work, welcome to cite our paper
+```bibtex
+@article{ai2022whodunit,
+  title={Whodunit? Learning to Contrast for Authorship Attribution},
+  author={Ai, Bo and Wang, Yuchen and Tan, Yugin and Tan, Samson},
+  journal={arXiv preprint arXiv:2209.11887},
+  year={2022}
+}
 
-- Change the `model_name` argument in the function call of `train_bert` in `train.py` to that of the desired
-  model (`bert-base-cased`, `roberta-base`, `microsoft/deberta-base`, `gpt2`, or `xlnet-base-cased`).
+```
 
-## Ensemble training
 
-- Download the pre-trained checkpoints for the various models
-  from [Google Drive](https://drive.google.com/drive/folders/1g0_-YhqvgCo6Z6x4tBu4Cwt-jp5orbcw).
-- Update the paths to the respective models in the function call of `train_ensemble` in `train.py`.
